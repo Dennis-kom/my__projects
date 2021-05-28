@@ -13,6 +13,7 @@ public class Ex14 {
      * Recursive method when given matrix and two integers represents x,y coordinates, the method checks if given x,y are part of a spot, if they ara ,the method counts the amount of sells participates in the spot
      * otherwise it returns 0
      *
+     * Remarks: any changes in the matrix are prohibited
      * **/
     public static int size (boolean[][] mat, int x, int y){
 
@@ -55,7 +56,54 @@ public class Ex14 {
      * Utility function that gets as parameter the matrix and two integers represents the x,y coordinates and returns if those x,y coordinates
      * either in bounds of the matrix or not
      * **/
-    public static boolean isInBound(boolean[][]mat,int x, int y){
+    private static boolean isInBound(boolean[][]mat,int x, int y){
         return (x < mat.length && x>=0 && y < mat.length && y >= 0);
     }
+
+    /**
+     * QUESTION 2
+     * Signature:
+     *
+     * **/
+    public static boolean isPermutation(int [] a, int [] b){
+        if(a==null || b==null || a.length !=b.length) return false;
+        return isPermutation(a,b,0,0,a);
+
+
+    }
+    /**
+     *
+     *
+     * **/
+    public static boolean isPermutation(int [] a, int [] b,int i,int j,int[]res){
+
+        // stop term 1
+        if(!(inBound(a,i) && inBound(a,j)) && !allCellsZero(res,0)) return false;
+
+        // seeking index got the bound of the array
+        if(j>=a.length) return isPermutation(a,b,i+1,0,res);
+
+        // stop term 2
+        if(i>=a.length && allCellsZero(res,0)) return true;
+
+        // similar value caught
+        if (inBound(a,i) && inBound(a,j) && a[i] == b[j]) {
+            res[i]=res[i]-b[j];
+            return isPermutation(a,b,i,j+1,res);
+        }
+
+        // different values
+        return isPermutation(a,b,i,j+1,res);
+    }
+
+    private static boolean allCellsZero (int[]a,int i){
+        if(i>=a.length) return true;
+        if(a[i]!=0) return false;
+        return allCellsZero(a,i+1);
+
+    }
+    private static boolean inBound(int[]a,int i){
+        return (i>=0 && i<a.length);
+    }
+
 }
